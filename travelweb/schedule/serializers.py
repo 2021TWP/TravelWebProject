@@ -14,4 +14,3 @@ class ScheduleContentSerializer(serializers.ModelSerializer):
         model = Schedule_content
         fields = ['id', 'content', 'schedule_id']
 
-

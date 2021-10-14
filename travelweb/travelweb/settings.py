@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mypage',
     'board',
+  
     'authentication',
     'schedule',
 
@@ -109,6 +110,7 @@ DATABASES = {
     }
 }
 
+
 # Password dvalidation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -174,3 +176,4 @@ REST_FRAMEWORK = {
 ACCOUNT_ADAPTER = 'authentication.adapter.CustomAccountAdapter'
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
+
