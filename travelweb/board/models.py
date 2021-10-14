@@ -1,9 +1,10 @@
 from django.db import models
+
 from account.models import AccountInfo
 from schedule.models import Schedule
 
 
-# 카테고리
+
 class Category(models.Model):
     objects = models.Manager()
     category_name = models.CharField(max_length=20)
@@ -15,6 +16,7 @@ class Category(models.Model):
 # 게시글
 class Board(models.Model):
     objects = models.Manager()
+
     user_id = models.ForeignKey(AccountInfo, on_delete=models.CASCADE)
     schedule_id = models.ForeignKey(Schedule, null=True, blank=True, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -24,6 +26,7 @@ class Board(models.Model):
     board_content = models.TextField()
     hit = models.IntegerField(default=0)
     like = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.title

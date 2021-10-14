@@ -14,9 +14,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+
+from django.urls import path
+from mypage import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('mypage/', include('mypage.urls')),
+    path('<str:id>/', views.mypage_list, name="mypage_list"),
+
+    path('<str:id>/changeinfo/', views.mypage_changeinfo, name="mypage_changeinfo"),
+    path('<str:id>/changeinfo/update/<str:pk>', views.mypage_changeinfo_update, name="mypage_changeinfo_update"),
+
+    path('<str:id>/group/', views.mypage_group, name="mypage_group"),
+    path('<str:id>/group/create/', views.mypage_group_create, name="mypage_group_create"),
+    path('<str:id>/group/update/<str:pk>/', views.mypage_group_update, name="mypage_group_update"),
+    path('<str:id>/group/delete/<str:pk>/', views.mypage_group_delete, name="mypage_group_delete"),
+
+    path('<str:id>/plan/', views.mypage_plan, name="mypage_plan"),
+    path('<str:id>/plan/create/', views.mypage_plan_create, name="mypage_plan_create"),
+    path('<str:id>/plan/update/<str:pk>', views.mypage_plan_update, name="mypage_plan_update"),
+    path('<str:id>/plan/delete/<str:pk>', views.mypage_plan_update, name="mypage_plan_delete"),
+
 ]

@@ -2,16 +2,18 @@ from rest_framework import serializers
 
 from .models import Schedule, Schedule_content
 
-class ScheduleSerializer(serializers.HyperlinkedModelSerializer):
+
+class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
-        fields = ['id', 'content_id', 'start_date',
+        fields = ['id',  'start_date',
                   'end_date', 'location']
 
 
-class ScheduleContentSerializer(serializers.HyperlinkedModelSerializer):
+class ScheduleContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule_content
-        fields = ['id', 'content', 'travel_date']
+        fields = ['id', 'content', 'schedule_id']
+
 
 

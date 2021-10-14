@@ -1,3 +1,4 @@
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from board.models import Category, Board, Comment
@@ -107,3 +108,4 @@ def comment_delete(request, pk):
     comment = Comment.objects.get(id=pk)
     comment.delete()
     return Response({"message": "Deleted!"})
+
