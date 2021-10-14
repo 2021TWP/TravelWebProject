@@ -3,6 +3,7 @@ from account.models import AccountInfo
 from schedule.models import Schedule
 
 
+# 카테고리
 class Category(models.Model):
     objects = models.Manager()
     category_name = models.CharField(max_length=20)
