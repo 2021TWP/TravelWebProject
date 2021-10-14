@@ -39,11 +39,24 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mypage',
     'board',
-    'rest_framework',
-    'account',
+  
+    'authentication',
     'schedule',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -141,4 +154,26 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "account.AccountInfo"
+AUTH_USER_MODEL = "authentication.UserInfo"
+
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'authentication.serializers.CustomLoginSerializer',
+    'USER_DETAILS_SERIALIZER': 'authentication.serializers.CustomUserDetailsSerializer',
+}
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'authentication.serializers.UserSerializer'
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+
+    ]
+}
+
+ACCOUNT_ADAPTER = 'authentication.adapter.CustomAccountAdapter'
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+

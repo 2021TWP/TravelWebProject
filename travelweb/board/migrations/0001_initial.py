@@ -1,5 +1,3 @@
-
-
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
@@ -57,7 +55,6 @@ class Migration(migrations.Migration):
             name='schedule_id',
 
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='schedule.schedule'),
-
         ),
         migrations.AddField(
             model_name='board',

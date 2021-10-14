@@ -1,4 +1,4 @@
-"""travelweb URL Configuration
+"""config URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -13,13 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+
 from django.urls import path, include
+from authentication import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/travel/', include('schedule.urls')),
-    path('api/authentication/', include('authentication.urls'))
-    path('board/', include('board.urls')),
-    ]
-
+    path('', include('dj_rest_auth.urls')),
+    path('signup/', include('dj_rest_auth.registration.urls')),
+    path('test/', views.user_check, name="test"),
+    path('group/create/', views.group_create, name="group_create"),
+]
