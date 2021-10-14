@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import Schedule, Schedule_content
 
+
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
@@ -13,5 +14,6 @@ class ScheduleContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule_content
         fields = ['id', 'content', 'schedule_id']
+
 
 

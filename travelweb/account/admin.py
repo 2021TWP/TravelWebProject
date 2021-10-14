@@ -3,4 +3,3 @@ from account.models import AccountInfo
 
 
 admin.site.register(AccountInfo)
-

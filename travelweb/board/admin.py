@@ -1,7 +1,7 @@
 from django.contrib import admin
-from board.models import Category
-from board.models import Board
-from board.models import Comment
+
+from board.models import Category, Board, Comment
+
 
 
 admin.site.register(Category)
