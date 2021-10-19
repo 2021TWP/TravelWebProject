@@ -31,7 +31,7 @@ def schedule_create(request):
 
 @api_view(['PUT'])
 def schedule_update(request, pk):
-    schedule = Schedule_content.objects.get(id=pk)
+    schedule = Schedule.objects.get(id=pk)
     serializer = ScheduleSerializer(instance=schedule, data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -44,7 +44,7 @@ def schedule_update(request, pk):
 def schedule_delete(request, pk):
     schedule = Schedule.objects.get(id=pk)
     schedule.delete()
-
+    return Response('Deleted')
 
 @api_view(['POST'])
 def schedule_content_create(request):
@@ -58,7 +58,7 @@ def schedule_content_create(request):
 
 @api_view(['PUT'])
 def schedule_content_update(request, pk):
-    content = Schedule.objects.get(id=pk)
+    content = Schedule_content.objects.get(id=pk)
     serializer = ScheduleContentSerializer(instance=content, data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -69,9 +69,19 @@ def schedule_content_update(request, pk):
 
 @api_view(['DELETE'])
 def schedule_content_delete(request, pk):
-    content = ScheduleContentSerializer.objects.get(id=pk)
+    content = Schedule_content.objects.get(id=pk)
     content.delete()
 
 
+@api_view(['GET'])
+def schedule_content_detail(request, pk):
+    content = Schedule_content.objects.get(id=pk)
+    serializer = ScheduleContentSerializer(content, many=False)
+    return Response(serializer.data)
 
 
+@api_view(['GET'])
+def schedule_content_list(request):
+    list = Schedule_content.objects.all()
+    serializer = ScheduleContentSerializer(list, many=True)
+    return Response(serializer.data)
