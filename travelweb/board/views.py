@@ -57,19 +57,20 @@ def board_detail(request, pk):
 
 @api_view(['POST'])
 def board_create(request):
-    serializer = BoardSerializer(data=request.data, )
+    serializer = BoardSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Created!"})
     else:
         # return Response({"message": "Failed to create!"})
-        return Response(serializer.data)
+        return Response(request.data)
 
 
 @api_view(['PUT'])
 def board_update(request, pk):
     board = Board.objects.get(id=pk)
     serializer = BoardSerializer(instance=board, data=request.data)
+    print(request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Updated!"})
@@ -83,6 +84,29 @@ def board_delete(request, pk):
     board = Board.objects.get(id=pk)
     board.delete()
     return Response({"message": "Deleted!"})
+
+
+@api_view(['PUT'])
+def board_hit(request, pk):
+    board = Board.objects.get(id=pk)
+    serializer = BoardSerializer(instance=board, data=request.data)
+    print(request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response({"message": "Failed to update Hit!"})
+
+
+# @api_view(['PUT'])
+# def board_like(request, pk):
+#     board = Board.objects.get(id=pk)
+#     serializer = BoardSerializer(instance=board, data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response({"message": "Updated Like!"})
+#     else:
+#         return Response({"message": "Failed to update Like!"})
 
 
 @api_view(['GET'])
@@ -113,7 +137,6 @@ def comment_detail(request, pk):
 #         return Response({"message": "Failed to create!"})
 
 
-
 @api_view(['POST'])
 def comment_create(request):
     serializer = CommentSerializer(data=request.data)
@@ -124,6 +147,7 @@ def comment_create(request):
     else:
         # return Response({"message": "Failed to create!"})
         return Response(serializer.data)
+
 
 @api_view(['PUT'])
 def comment_update(request, pk):
