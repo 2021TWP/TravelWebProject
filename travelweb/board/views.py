@@ -48,18 +48,19 @@ def board_detail(request, pk):
 
 @api_view(['POST'])
 def board_create(request):
-    serializer = BoardSerializer(data=request.data,)
+    serializer = BoardSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Created!"})
     else:
-        return Response({"message": "Failed to create!"})
+        return Response(request.data)
 
 
 @api_view(['PUT'])
 def board_update(request, pk):
     board = Board.objects.get(id=pk)
     serializer = BoardSerializer(instance=board, data=request.data)
+    print(request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Updated!"})
@@ -77,25 +78,24 @@ def board_delete(request, pk):
 @api_view(['PUT'])
 def board_hit(request, pk):
     board = Board.objects.get(id=pk)
-    board.hit += 1
     serializer = BoardSerializer(instance=board, data=request.data)
+    print(request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Updated Hit!"})
+        return Response(serializer.data)
     else:
         return Response({"message": "Failed to update Hit!"})
 
 
-@api_view(['PUT'])
-def board_like(request, pk):
-    board = Board.objects.get(id=pk)
-    board.like += 1
-    serializer = BoardSerializer(instance=board, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response({"message": "Updated Like!"})
-    else:
-        return Response({"message": "Failed to update Like!"})
+# @api_view(['PUT'])
+# def board_like(request, pk):
+#     board = Board.objects.get(id=pk)
+#     serializer = BoardSerializer(instance=board, data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response({"message": "Updated Like!"})
+#     else:
+#         return Response({"message": "Failed to update Like!"})
 
 
 @api_view(['GET'])
