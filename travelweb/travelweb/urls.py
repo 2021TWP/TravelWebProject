@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from authentication import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,4 +23,6 @@ urlpatterns = [
     path('api/authentication/', include('authentication.urls')),
     path('api/board/', include('board.urls')),
     ]
+    # path('accounts/login/', views.after_email_confirm, name='after_email_confirmation'),
+        ]
 

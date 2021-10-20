@@ -4,6 +4,7 @@ from django.db import models
 from authentication.models import UserInfo as AccountInfo
 from schedule.models import Schedule
 
+
 class Category(models.Model):
     objects = models.Manager()
     category_name = models.CharField(max_length=20)
