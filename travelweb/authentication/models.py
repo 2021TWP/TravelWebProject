@@ -9,3 +9,10 @@ class UserInfo(AbstractUser):
     def __str__(self):
         return self.username
 
+
+class UserGroup(models.Model):
+    group_name = models.CharField(max_length=20, blank=False)
+    pin = models.CharField(max_length=8, blank=False)
+
+    def __str__(self):
+        return self.group_name

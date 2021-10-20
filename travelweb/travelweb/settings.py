@@ -175,5 +175,18 @@ REST_FRAMEWORK = {
 
 ACCOUNT_ADAPTER = 'authentication.adapter.CustomAccountAdapter'
 
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'travelprojectmulticampus@gmail.com'
+EMAIL_HOST_PASSWORD = 'abc1234@'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# !!!! very important for django-allauth specifically
+##이메일 추가
+EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
