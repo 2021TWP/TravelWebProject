@@ -117,6 +117,7 @@ def comment_detail(request, pk):
 @api_view(['POST'])
 def comment_create(request):
     serializer = CommentSerializer(data=request.data)
+    print("코멘트 데이터 ========> ", request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Created!"})
@@ -128,11 +129,17 @@ def comment_create(request):
 def comment_update(request, pk):
     comment = Comment.objects.get(id=pk)
     serializer = CommentSerializer(instance=comment, data=request.data)
+    print("코멘트 데이터 ========> ", request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Updated!"})
+        print("success")
+        # return Response({"message": "Updated!"})
+        return Response(serializer.data)
     else:
-        return Response({"message": "Failed to update!"})
+        print("fail")
+        return Response(serializer.data)
+
+        # return Response({"message": "Failed to update!"})
 
 
 @api_view(['DELETE'])
