@@ -21,7 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/travel/', include('schedule.urls')),
     path('api/authentication/', include('authentication.urls')),
-    path('board/', include('board.urls')),
+    path('api/board/', include('board.urls')),
+    ]
     # path('accounts/login/', views.after_email_confirm, name='after_email_confirmation'),
         ]
 

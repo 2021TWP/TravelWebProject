@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from board.models import Category, Board, Comment
-from board.serializer import CategorySerializer, BoardSerializer, CommentSerializer
+from board.serializer import CategorySerializer, BoardSerializer, CommentSerializer , BoardCommentSerializer
 
 
 @api_view(['GET'])
@@ -39,6 +39,15 @@ def board_list(request):
     return Response(serializer.data)
 
 
+# @api_view(['GET'])
+# def board_detail(request, pk):
+#     board = Board.objects.get(id=pk)
+#     # comments = Comment.objects.filter(id=board.id)
+#     serializer = BoardCommentSerializer(board, many=False)
+#     print(serializer.data)
+#     return Response(serializer.data)
+#     # return Response(serializer.data)
+
 @api_view(['GET'])
 def board_detail(request, pk):
     board = Board.objects.get(id=pk)
@@ -48,12 +57,13 @@ def board_detail(request, pk):
 
 @api_view(['POST'])
 def board_create(request):
-    serializer = BoardSerializer(data=request.data,)
+    serializer = BoardSerializer(data=request.data, )
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Created!"})
     else:
-        return Response({"message": "Failed to create!"})
+        # return Response({"message": "Failed to create!"})
+        return Response(serializer.data)
 
 
 @api_view(['PUT'])
@@ -64,7 +74,8 @@ def board_update(request, pk):
         serializer.save()
         return Response({"message": "Updated!"})
     else:
-        return Response({"message": "Failed to update!"})
+        # return Response({"message": "Failed to update!"})
+        return Response(serializer.data)
 
 
 @api_view(['DELETE'])
@@ -75,31 +86,60 @@ def board_delete(request, pk):
 
 
 @api_view(['GET'])
-def comment_list(request):
-    comments = Comment.objects.all()
+def comment_list(request, bid):
+    comments = Comment.objects.filter(board_id=bid)
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def comment_detail(request, pk):
+    comments = Comment.objects.get(id=pk)
+    serializer = CommentSerializer(comments, many=False)
+    return Response(serializer.data)
+
+
+# @api_view(['POST'])
+# # def comment_create(request, pk):
+# def comment_create(request, pk):
+#
+#     board = Board.objects.get(id=pk)
+#     serializer = CommentSerializer(instance=board, data=request.data)
+#     if serializer.is_valid():
+#         # serializer.save(board=board)
+#         serializer.save()
+#         return Response({"message": "Created!"})
+#     else:
+#         return Response({"message": "Failed to create!"})
+
 
 
 @api_view(['POST'])
 def comment_create(request):
     serializer = CommentSerializer(data=request.data)
+    print("코멘트 데이터 ========> ", request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Created!"})
     else:
-        return Response({"message": "Failed to create!"})
-
+        # return Response({"message": "Failed to create!"})
+        return Response(serializer.data)
 
 @api_view(['PUT'])
 def comment_update(request, pk):
     comment = Comment.objects.get(id=pk)
     serializer = CommentSerializer(instance=comment, data=request.data)
+    print("코멘트 데이터 ========> ", request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Updated!"})
+        print("success")
+        # return Response({"message": "Updated!"})
+        return Response(serializer.data)
     else:
-        return Response({"message": "Failed to update!"})
+        print("fail")
+        return Response(serializer.data)
+
+        # return Response({"message": "Failed to update!"})
 
 
 @api_view(['DELETE'])
@@ -107,4 +147,3 @@ def comment_delete(request, pk):
     comment = Comment.objects.get(id=pk)
     comment.delete()
     return Response({"message": "Deleted!"})
-
