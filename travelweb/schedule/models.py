@@ -6,9 +6,12 @@ class Schedule(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     location = models.CharField(max_length=300)
+    title = models.TextField(max_length=100)
+    description = models.TextField(max_length=400)
+    img = models.TextField(max_length=500,null=True,blank=True )
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 class Schedule_content(models.Model):
     # 일반적으론 Schedule 번호(id)를 갖고 있음.
@@ -21,4 +24,4 @@ class Schedule_content(models.Model):
     # travel_date = models.DateTimeField(default=datetime.now())
 
     def __str__(self):
-        return self.id
+        return str(self.id)
