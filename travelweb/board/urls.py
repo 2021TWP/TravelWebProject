@@ -13,9 +13,7 @@ urlpatterns = [
     path('update/<int:pk>/', views.board_update, name='board_update'),
     path('delete/<int:pk>/', views.board_delete, name='board_delete'),
 
-    path('comment/list/<int:bid>/', views.comment_list, name='comment_list'),
-    path('comment/<int:pk>/', views.comment_detail, name='comment_detail'),
-    # path('comment/create/<int:pk>/', views.comment_create, name='comment_create'),
+    path('comment/', views.comment_list, name='comment_list'),
     path('comment/create/', views.comment_create, name='comment_create'),
     path('comment/update/<int:pk>/', views.comment_update, name='comment_update'),
     path('comment/delete/<int:pk>/', views.comment_delete, name='comment_delete'),

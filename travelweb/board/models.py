@@ -17,7 +17,7 @@ class Category(models.Model):
 class Board(models.Model):
     objects = models.Manager()
 
-    user_id = models.ForeignKey(AccountInfo,  on_delete=models.CASCADE)
+    user_id = models.ForeignKey(AccountInfo, on_delete=models.CASCADE)
     schedule_id = models.ForeignKey(Schedule, null=True, blank=True, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     imgUrl = models.TextField(null=True, blank=True)

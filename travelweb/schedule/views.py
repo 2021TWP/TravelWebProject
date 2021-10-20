@@ -24,7 +24,7 @@ def schedule_create(request):
     serializer = ScheduleSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({"msg": "success"})
+        return Response({serializer.data})
     else:
         return Response({"msg": "failed"})
 
@@ -49,11 +49,15 @@ def schedule_delete(request, pk):
 @api_view(['POST'])
 def schedule_content_create(request):
     serializer = ScheduleContentSerializer(data=request.data)
+
     if serializer.is_valid():
         serializer.save()
         return Response({"msg": "success"})
+
     else:
+
         return Response({"msg": "failed"})
+
 
 
 @api_view(['PUT'])
