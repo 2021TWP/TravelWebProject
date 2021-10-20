@@ -1,3 +1,4 @@
+
 from django.db import migrations, models
 import django.db.models.deletion
 
@@ -19,6 +20,7 @@ class Migration(migrations.Migration):
                 ('location', models.CharField(max_length=300)),
                 ('title', models.TextField(max_length=100)),
                 ('description', models.TextField(max_length=400)),
+                ('img', models.TextField(blank=True, max_length=500, null=True)),
             ],
         ),
         migrations.CreateModel(
