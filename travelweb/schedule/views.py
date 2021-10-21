@@ -46,6 +46,15 @@ def schedule_delete(request, pk):
     schedule.delete()
     return Response('Deleted')
 
+
+@api_view(['GET'])
+def schedule_content_num(request, pk):
+    list = Schedule_content.objects.filter(schedule_id=pk)
+    serializer = ScheduleContentSerializer(list, many=True)
+    return Response(serializer.data)
+
+
+
 @api_view(['POST'])
 def schedule_content_create(request):
     serializer = ScheduleContentSerializer(data=request.data)
@@ -89,3 +98,5 @@ def schedule_content_list(request):
     list = Schedule_content.objects.all()
     serializer = ScheduleContentSerializer(list, many=True)
     return Response(serializer.data)
+
+
