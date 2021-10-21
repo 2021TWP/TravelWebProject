@@ -24,7 +24,7 @@ def schedule_create(request):
     serializer = ScheduleSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({serializer.data})
+        return Response(serializer.data)
     else:
         return Response({"msg": "failed"})
 
@@ -84,6 +84,7 @@ def schedule_content_update(request, pk):
 def schedule_content_delete(request, pk):
     content = Schedule_content.objects.get(id=pk)
     content.delete()
+    return Response('Deleted')
 
 
 @api_view(['GET'])
