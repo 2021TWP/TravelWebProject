@@ -21,11 +21,3 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'board_id', 'user_id', 'comment_content', 'comment_date']
-
-class BoardCommentSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Board
-        fields = ['id', 'user_id', 'category_id', 'title', 'imgUrl',
-                  'schedule_id', 'date', 'board_content', 'hit', 'like', 'comments']
