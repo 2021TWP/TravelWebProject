@@ -3,11 +3,13 @@ from dj_rest_auth.serializers import UserDetailsSerializer, LoginSerializer
 from dj_rest_auth.serializers import PasswordResetSerializer as _PasswordResetSerializer
 from dj_rest_auth.serializers import PasswordResetConfirmSerializer as _PasswordResetConfirmSerializer
 from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.models import Group
+from authentication.models import UserGroup
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from django.conf import settings
 from authentication.forms import CustomAllAuthPasswordResetForm
+
+from schedule.serializers import ScheduleSerializer
 
 
 class PasswordResetSerializer(_PasswordResetSerializer):
@@ -43,6 +45,7 @@ class UserSerializer(RegisterSerializer):
     username = serializers.CharField(error_messages={"blank": "아이디를 입력해주세요"})
     password1 = serializers.CharField(error_messages={"blank": "비밀번호를 입력해주세요"})
     password2 = serializers.CharField(error_messages={"blank": "비밀번호 확인을 입력해주세요"})
+    g_id = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     def get_cleaned_data(self):
         data_in_dictionary = super().get_cleaned_data()
@@ -56,13 +59,13 @@ class CustomLoginSerializer(LoginSerializer):
 
 
 class GroupSerializer(ModelSerializer):
-    groupName = serializers.CharField(required=True)
-    pin = serializers.CharField(required=True)
-    schedule_id = serializers.CharField(required=False, )
+    group_name = serializers.CharField(required=True)
+    schedules = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    pin = serializers.CharField(required=True, max_length=8)
 
     class Meta:
-        model = Group
-        fields = ['groupName', 'pin']
+        model = UserGroup
+        fields = ['group_name', 'pin', 'schedules']
 
 
 class CustomUserDetailsSerializer(UserDetailsSerializer):

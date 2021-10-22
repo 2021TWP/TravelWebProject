@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path, include, re_path
 from authentication import views
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, PasswordChangeView
 
 urlpatterns = [
     path('', include('dj_rest_auth.urls')),
@@ -26,6 +26,7 @@ urlpatterns = [
     path('signup/^account-confirm-email/<str:key>/', ConfirmEmailView.as_view(), name='account_confirm_email'),
     path('password/reset/', PasswordResetView.as_view(), name='password_reset'),
     path('password/reset/confirm/<str:uid>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password/change/', PasswordChangeView.as_view(), name='password_change'),
     path('test/', views.user_check, name="test"),
     path('userinfo/', views.get_userinfo, name="get_userinfo"),
     path('group/create/', views.group_create, name="group_create"),

@@ -195,3 +195,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
 URL_FRONT = 'http://localhost:3000/'
+
+##비밀번호 변경시, 기존 비밀번호 입력 여부
+OLD_PASSWORD_FIELD_ENABLED = True

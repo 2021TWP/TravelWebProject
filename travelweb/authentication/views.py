@@ -1,11 +1,10 @@
-from django.contrib.auth.models import Group
 from django.shortcuts import redirect
 from rest_framework.decorators import api_view
 from authentication.serializers import UserSerializer, GroupSerializer
 from rest_framework.response import Response
 from allauth.account.models import EmailAddress
 
-from authentication.models import UserInfo
+from authentication.models import UserInfo, UserGroup
 
 
 @api_view(['POST'])
@@ -22,14 +21,13 @@ def user_check(request):
 
 @api_view(['POST'])
 def group_create(request):
-    print(request.data)
     serializer = GroupSerializer(data=request.data)
-    print(request.user)
     if serializer.is_valid():
-        new_group = Group.objects.create(name=request.data['groupName'])
-        new_group.user_set.add(request.user)
-        print(type(new_group))
-        return Response("success")
+        UserGroup.objects.create(group_name=request.data['group_name'], pin=request.data['pin'])
+        return Response("good job")
+    else:
+        print(serializer.data)
+        return Response("응 안됨")
 
 
 @api_view(['GET'])
