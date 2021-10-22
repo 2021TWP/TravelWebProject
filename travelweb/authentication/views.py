@@ -1,7 +1,9 @@
 from django.contrib.auth.models import Group
+from django.shortcuts import redirect
 from rest_framework.decorators import api_view
 from authentication.serializers import UserSerializer, GroupSerializer
 from rest_framework.response import Response
+from allauth.account.models import EmailAddress
 
 from authentication.models import UserInfo
 
@@ -39,6 +41,4 @@ def get_userinfo(request):
     return Response(userdata)
 
 
-@api_view(['GET'])
-def after_email_confirm(request):
-    return Response('success!')
+

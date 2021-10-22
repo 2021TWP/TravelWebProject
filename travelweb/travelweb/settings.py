@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -73,7 +73,7 @@ ROOT_URLCONF = 'travelweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,6 +84,7 @@ TEMPLATES = [
             ],
         },
     },
+
 ]
 
 WSGI_APPLICATION = 'travelweb.wsgi.application'
@@ -159,6 +160,8 @@ AUTH_USER_MODEL = "authentication.UserInfo"
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'authentication.serializers.CustomLoginSerializer',
     'USER_DETAILS_SERIALIZER': 'authentication.serializers.CustomUserDetailsSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'authentication.serializers.PasswordResetSerializer',
+    'PASSWORD_RESET_CONFIRM_SERIALIZER': 'authentication.serializers.PasswordResetConfirmSerializer',
 }
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'authentication.serializers.UserSerializer'
@@ -178,6 +181,8 @@ ACCOUNT_ADAPTER = 'authentication.adapter.CustomAccountAdapter'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+##이메일 추가
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'travelprojectmulticampus@gmail.com'
@@ -185,7 +190,8 @@ EMAIL_HOST_PASSWORD = 'abc1234@'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# !!!! very important for django-allauth specifically
-##이메일 추가
-EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+
+
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+
+URL_FRONT = 'http://localhost:3000/'
