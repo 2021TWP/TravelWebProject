@@ -22,6 +22,7 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['id', 'board_id', 'user_id', 'comment_content', 'comment_date']
 
+
 class BoardCommentSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
 

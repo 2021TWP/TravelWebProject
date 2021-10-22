@@ -1,5 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+# from authentication.models import UserInfo
+from authentication.serializers import UserSerializer
 from board.models import Category, Board, Comment
 from board.serializer import CategorySerializer, BoardSerializer, CommentSerializer , BoardCommentSerializer
 
@@ -70,7 +74,6 @@ def board_create(request):
 def board_update(request, pk):
     board = Board.objects.get(id=pk)
     serializer = BoardSerializer(instance=board, data=request.data)
-    print(request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "Updated!"})
@@ -104,9 +107,35 @@ def board_hit(request, pk):
 #     serializer = BoardSerializer(instance=board, data=request.data)
 #     if serializer.is_valid():
 #         serializer.save()
-#         return Response({"message": "Updated Like!"})
+#         return Response(serializer.data)
 #     else:
 #         return Response({"message": "Failed to update Like!"})
+#
+#
+# @api_view(['PUT'])
+# def board_like(request, pk):
+#     board = Board.objects.get(id=pk)
+#     user = UserInfo.objects.get(id=pk)
+#     serializer = UserSerializer(instance=user, data=request.data)
+#
+#     check_like_board = user.like_posts.filter(id=pk)
+#
+#     if check_like_board.exists():
+#         user.like_posts.remove(board)
+#         board.like -= 1
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response({"message": "Failed to update Like!"})
+#     else:
+#         user.like_posts.add(board)
+#         board.like += 1
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response({"message": "Failed to update Like!"})
 
 
 @api_view(['GET'])
