@@ -79,17 +79,17 @@ def board_update(request, pk):
         return Response(serializer.data)
 
 
-@api_view(['PUT'])
-def board_update(request, pk):
-    board = Board.objects.get(id=pk)
-    serializer = BoardSerializer(instance=board, data=request.data)
-    print(request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response({"message": "Updated!"})
-    else:
-        # return Response({"message": "Failed to update!"})
-        return Response(serializer.data)
+# @api_view(['PUT'])
+# def board_update(request, pk):
+#     board = Board.objects.get(id=pk)
+#     serializer = BoardSerializer(instance=board, data=request.data)
+#     print(request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response({"message": "Updated!"})
+#     else:
+#         # return Response({"message": "Failed to update!"})
+#         return Response(serializer.data)
 
 
 @api_view(['DELETE'])
