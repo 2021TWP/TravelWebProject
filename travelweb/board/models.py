@@ -1,10 +1,9 @@
 from django.db import models
-
-# 카테고리
-from authentication.models import UserInfo as AccountInfo
+from authentication.models import UserInfo
 from schedule.models import Schedule
 
 
+# 카테고리
 class Category(models.Model):
     objects = models.Manager()
     category_name = models.CharField(max_length=20)
@@ -17,7 +16,7 @@ class Category(models.Model):
 class Board(models.Model):
     objects = models.Manager()
 
-    user_id = models.ForeignKey(AccountInfo, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(UserInfo, related_name='boarduser', on_delete=models.CASCADE)
     schedule_id = models.ForeignKey(Schedule, null=True, blank=True, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     imgUrl = models.TextField(null=True, blank=True)
@@ -35,7 +34,7 @@ class Board(models.Model):
 class Comment(models.Model):
     objects = models.Manager()
     board_id = models.ForeignKey(Board, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(AccountInfo, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
     comment_content = models.TextField()
     comment_date = models.DateTimeField()
 
