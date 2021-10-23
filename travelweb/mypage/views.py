@@ -30,7 +30,7 @@ def mypage_list(request):
 # 내가 작성한 글
 @api_view(['GET'])
 def mypage_board(request):
-    boards = Board.objects.filter(id=request.user.id)
+    boards = Board.objects.filter(user_id=request.user.id)
     serializer = BoardSerializer(boards, many=True)
     return Response(serializer.data)
 
@@ -46,6 +46,13 @@ def mypage_changeinfo(request):
         return Response({"message": "Information change success!!"})
     else:
         return Response({"message": "Failed to change!"})
+
+@api_view(['GET'])
+def mypage_get_username(request, user_id):
+    user = UserInfo.objects.get(id=user_id)
+    serializer = UserDataSerializer(user, many=False)
+    print(serializer.data)
+    return Response(serializer.data)
 
 
 # @api_view(['PUT'])

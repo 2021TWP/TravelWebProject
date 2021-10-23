@@ -23,6 +23,7 @@ urlpatterns = [
     path('', views.mypage_list, name="mypage_list"), # 내 정보 보여주기
     path('myboard/', views.mypage_board, name="mypage_board"),
     path('changeinfo/', views.mypage_changeinfo, name="mypage_changeinfo"),
+    path('getusername/<int:user_id>', views.mypage_get_username, name="mypage_get_username"),
     # path('<str:id>/changeinfo/update/<str:pk>', views.mypage_changeinfo_update, name="mypage_changeinfo_update"),
 
     # path('<str:pk>/group/', views.mypage_group, name="mypage_group"),
