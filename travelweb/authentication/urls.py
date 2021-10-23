@@ -29,6 +29,8 @@ urlpatterns = [
     path('password/change/', PasswordChangeView.as_view(), name='password_change'),
     path('test/', views.user_check, name="test"),
     path('userinfo/', views.get_userinfo, name="get_userinfo"),
+    path('group/', views.group_all, name="group_all"),
     path('group/create/', views.group_create, name="group_create"),
+
     # path()
 ]
