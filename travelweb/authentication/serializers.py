@@ -9,6 +9,8 @@ from rest_framework.serializers import ModelSerializer
 from django.conf import settings
 from authentication.forms import CustomAllAuthPasswordResetForm
 
+from authentication.models import UserInfo
+
 
 class PasswordResetSerializer(_PasswordResetSerializer):
 
@@ -53,6 +55,17 @@ class UserSerializer(RegisterSerializer):
 class CustomLoginSerializer(LoginSerializer):
     username = serializers.CharField(required=True, error_messages={"blank": "아이디를 입력해주세요"})
     password = serializers.CharField(required=True, error_messages={"blank": "비밀번호를 입력해주세요"})
+
+class UserDataSerializer(ModelSerializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField(max_length=20, error_messages={"blank": "이름을 입력해주세요"})
+    email = serializers.EmailField(required=True, error_messages={"blank": "이메일을 입력해주세요"})
+    username = serializers.CharField(error_messages={"blank": "아이디를 입력해주세요"})
+    g_id = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = UserInfo
+        fields = ['id', 'username', 'name', 'email', 'g_id']
 
 
 class GroupSerializer(ModelSerializer):
