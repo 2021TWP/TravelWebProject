@@ -7,7 +7,6 @@ from allauth.account.models import EmailAddress
 from authentication.models import UserInfo, UserGroup
 
 
-
 @api_view(['GET'])
 def user_check(request):
     # print(request.user)
@@ -41,6 +40,38 @@ def group_all(request):
 
 
 @api_view(['GET'])
+def my_groups(request):
+    serializer = GroupSerializer(request.user.g_id.all(), many=True)
+    my_group_id = list(map(lambda x: x['id'], serializer.data))
+    return Response(my_group_id)
+
+
+@api_view(['PUT'])
+def group_join(request):
+    group = UserGroup.objects.get(id=request.data['g_id'])
+    serializer = GroupSerializer(group, many=False)
+    serializer2 = GroupSerializer(request.user.g_id.all(), many=True)
+    my_groups_id = list(map(lambda x: x['id'], serializer2.data))
+    if request.user.is_authenticated:
+        if serializer.data['pin'] == request.data['pin']:
+            if group.id in my_groups_id:
+                return Response({'error': '이미 가입한 그룹입니다.'})
+            user = UserInfo.objects.get(id=request.user.id)
+            user.g_id.add(group.id)
+            return Response({'success': '가입 완료'})
+        else:
+            return Response({'error': 'pin번호가 틀렸습니다.'})
+    else:
+        return Response({'error': '로그인이 필요한 서비스입니다.'})
+
+
+@api_view(['PUT'])
+def group_withdraw(request):
+    user = UserInfo.objects.get(id=request.user.id)
+    user.g_id.remove(request.data['g_id'])
+    return Response({"success": "탈퇴 완료"})
+
+@api_view(['GET'])
 def get_userinfo(request):
     userdata = {'username': request.user.username,
                 'name': request.user.name,
@@ -48,3 +79,14 @@ def get_userinfo(request):
                 'email': request.user.email}
     return Response(userdata)
 
+
+@api_view(['GET'])
+def users_in_group(request, g_id):
+    users = UserInfo.objects.filter(g_id=g_id)
+    serializer = UserDataSerializer(users, many=True)
+    name = []
+    print(serializer.data)
+    for i in serializer.data:
+        name.append(i['name'])
+    print(name)
+    return Response(name)
