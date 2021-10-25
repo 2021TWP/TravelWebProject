@@ -25,12 +25,10 @@ def user_check(request):
 def group_create(request):
     serializer = GroupSerializer(data=request.data)
     if serializer.is_valid():
-        UserGroup.objects.create(group_name=request.data['group_name'], pin=request.data['pin'])
+        serializer.save()
+        request.user.g_id.add(serializer.data['id'])
         return Response("good job")
-    else:
-        print(serializer.data)
-        return Response("응 안됨")
-
+    return Response("nope")
 
 @api_view(['GET'])
 def group_all(request):
@@ -43,7 +41,7 @@ def group_all(request):
 def my_groups(request):
     serializer = GroupSerializer(request.user.g_id.all(), many=True)
     my_group_id = list(map(lambda x: x['id'], serializer.data))
-    return Response(my_group_id)
+    return Response({'id': my_group_id, 'groups': serializer.data})
 
 
 @api_view(['PUT'])
@@ -69,6 +67,11 @@ def group_join(request):
 def group_withdraw(request):
     user = UserInfo.objects.get(id=request.user.id)
     user.g_id.remove(request.data['g_id'])
+    try:
+        UserInfo.objects.get(g_id=request.data['g_id'])
+    except Exception:
+        group = UserGroup.objects.get(id=request.data['g_id'])
+        group.delete()
     return Response({"success": "탈퇴 완료"})
 
 @api_view(['GET'])
