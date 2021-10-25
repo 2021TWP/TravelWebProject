@@ -40,9 +40,8 @@ class PasswordResetConfirmSerializer(_PasswordResetConfirmSerializer):
 
 class GroupSerializer(ModelSerializer):
     group_name = serializers.CharField(required=True)
-    schedules = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    schedules = ScheduleSerializer(many=True, read_only=True)
     pin = serializers.CharField(required=True, max_length=8)
-    created_date = serializers.DateField()
 
     class Meta:
         model = UserGroup
