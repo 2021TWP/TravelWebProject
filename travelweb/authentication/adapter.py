@@ -9,6 +9,9 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         path = 'http://localhost:3000/authentication/emailconfirmed/'
         return path
 
+    def get_email_confirmation_url(self, request, emailconfirmation):
+        return f'http://localhost:3000/authentication/emailconfirmed/{emailconfirmation.key}/'
+
     def send_mail(self, template_prefix, email, context):
         msg = self.render_mail(template_prefix, email, context)
         msg.send()
