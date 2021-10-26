@@ -16,7 +16,7 @@ class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
         fields = ['id', 'user_id', 'category_id', 'title', 'imgUrl',
-                  'schedule_id', 'date', 'board_content', 'hit', 'like']
+                  'schedule_id', 'date', 'board_content', 'hit']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class BoardCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
         fields = ['id', 'user_id', 'category_id', 'title', 'imgUrl',
-                  'schedule_id', 'date', 'board_content', 'hit', 'like', 'comments', 'board', 'users']
+                  'schedule_id', 'date', 'board_content', 'hit', 'comments', 'board', 'users']
 
     def create(self,validated_date) :
         pass

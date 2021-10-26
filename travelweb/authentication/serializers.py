@@ -1,5 +1,6 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import UserDetailsSerializer, LoginSerializer
+from dj_rest_auth.serializers import PasswordChangeSerializer as _PasswordChangeSerializer
 from dj_rest_auth.serializers import PasswordResetSerializer as _PasswordResetSerializer
 from dj_rest_auth.serializers import PasswordResetConfirmSerializer as _PasswordResetConfirmSerializer
 from django.contrib.auth.forms import PasswordResetForm
@@ -87,6 +88,11 @@ class CustomLoginSerializer(LoginSerializer):
     username = serializers.CharField(required=True, error_messages={"blank": "아이디를 입력해주세요"})
     password = serializers.CharField(required=True, error_messages={"blank": "비밀번호를 입력해주세요"})
 
+
+class PasswordChangeSerializer(_PasswordChangeSerializer):
+    new_password1 = serializers.CharField(required=True, error_messages={"blank": "새로운 비밀번호를 입력해주세요"})
+    new_password2 = serializers.CharField(required=True, error_messages={"blank": "비밀번호 확인을 입력해주세요"})
+    old_password = serializers.CharField(required=True, error_messages={"blank": "기존 비밀번호를 입력해주세요"})
 
 
 

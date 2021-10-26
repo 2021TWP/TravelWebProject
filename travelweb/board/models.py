@@ -24,7 +24,6 @@ class Board(models.Model):
     date = models.DateTimeField()
     board_content = models.TextField()
     hit = models.IntegerField(default=0)
-    like = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
