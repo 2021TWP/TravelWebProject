@@ -1,36 +1,82 @@
-from django.contrib.auth.models import Group
 from django.shortcuts import redirect
 from rest_framework.decorators import api_view
-from authentication.serializers import UserSerializer, GroupSerializer
+from authentication.serializers import UserSerializer, GroupSerializer, UserDataSerializer
 from rest_framework.response import Response
 from allauth.account.models import EmailAddress
 
-from authentication.models import UserInfo
+from authentication.models import UserInfo, UserGroup
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def user_check(request):
     # print(request.user)
     # print(request.auth)
-    print(request.user in Group.objects.get(name='abcd').user_set.all())
-    print(Group.objects.get(name='abcd'))
-    serializer = UserSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+    # print(request.user in Group.objects.get(name='abcd').user_set.all())
+    # user = UserInfo.objects.all()
+    # print(user)
+    # serializer = UserDataSerializer(user, many=True)
+
+    user2 = UserInfo.objects.filter(id=2)
+    serializer = UserDataSerializer(user2, many=True)
     return Response(serializer.data)
 
 
 @api_view(['POST'])
 def group_create(request):
-    print(request.data)
     serializer = GroupSerializer(data=request.data)
-    print(request.user)
     if serializer.is_valid():
-        new_group = Group.objects.create(name=request.data['groupName'])
-        new_group.user_set.add(request.user)
-        print(type(new_group))
-        return Response("success")
+        serializer.save()
+        print(serializer.data)
+        request.user.g_id.add(serializer.data['id'])
+        return Response({"success": "그룹을 성공적으로 생성했습니다."})
+    else:
+        print(serializer.data)
+        return Response(serializer.errors)
 
+@api_view(['GET'])
+def group_all(request):
+    groups = UserGroup.objects.all()
+    serializer = GroupSerializer(groups, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def my_groups(request):
+    serializer = GroupSerializer(request.user.g_id.all(), many=True)
+    my_group_id = list(map(lambda x: x['id'], serializer.data))
+    print(serializer.data)
+    return Response({'id': my_group_id, 'groups': serializer.data})
+
+
+@api_view(['PUT'])
+def group_join(request):
+    group = UserGroup.objects.get(id=request.data['g_id'])
+    serializer = GroupSerializer(group, many=False)
+    serializer2 = GroupSerializer(request.user.g_id.all(), many=True)
+    my_groups_id = list(map(lambda x: x['id'], serializer2.data))
+    if request.user.is_authenticated:
+        if serializer.data['pin'] == request.data['pin']:
+            if group.id in my_groups_id:
+                return Response({'error': '이미 가입한 그룹입니다.'})
+            user = UserInfo.objects.get(id=request.user.id)
+            user.g_id.add(group.id)
+            return Response({'success': '가입 완료'})
+        else:
+            return Response({'error': 'pin번호가 틀렸습니다.'})
+    else:
+        return Response({'error': '로그인이 필요한 서비스입니다.'})
+
+
+@api_view(['PUT'])
+def group_withdraw(request):
+    user = UserInfo.objects.get(id=request.user.id)
+    user.g_id.remove(request.data['g_id'])
+    try:
+        UserInfo.objects.get(g_id=request.data['g_id'])
+    except Exception:
+        group = UserGroup.objects.get(id=request.data['g_id'])
+        group.delete()
+    return Response({"success": "탈퇴 완료"})
 
 @api_view(['GET'])
 def get_userinfo(request):
@@ -41,4 +87,13 @@ def get_userinfo(request):
     return Response(userdata)
 
 
-
+@api_view(['GET'])
+def users_in_group(request, g_id):
+    users = UserInfo.objects.filter(g_id=g_id)
+    serializer = UserDataSerializer(users, many=True)
+    name = []
+    print(serializer.data)
+    for i in serializer.data:
+        name.append(i['name'])
+    print(name)
+    return Response(name)

@@ -148,7 +148,6 @@ def comment_list(request, bid):
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
 
-
 @api_view(['GET'])
 def comment_detail(request, pk):
     comments = Comment.objects.get(id=pk)
