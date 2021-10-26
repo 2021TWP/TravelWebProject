@@ -143,8 +143,8 @@ def board_hit(request, pk):
 
 
 @api_view(['GET'])
-def comment_list(request):
-    comments = Comment.objects.all()
+def comment_list(request, bid):
+    comments = Comment.objects.filter(board_id=bid)
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
 
