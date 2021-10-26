@@ -8,6 +8,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from django.conf import settings
 from authentication.forms import CustomAllAuthPasswordResetForm
+from rest_framework.validators import UniqueValidator
 
 from schedule.serializers import ScheduleSerializer
 
@@ -39,13 +40,21 @@ class PasswordResetConfirmSerializer(_PasswordResetConfirmSerializer):
 
 
 class GroupSerializer(ModelSerializer):
-    group_name = serializers.CharField(required=True)
+    group_name = serializers.CharField(required=True,
+                                       validators=[UniqueValidator(queryset=UserGroup.objects.all(),
+                                                                   message="이미 같은 이름의 그룹이 존재합니다.")],
+                                       error_messages={"blank": "그룹 명을 작성해 주세요"})
     schedules = ScheduleSerializer(many=True, read_only=True)
-    pin = serializers.CharField(required=True, max_length=8)
+    pin = serializers.CharField(required=True, max_length=8, error_messages={"blank": "PIN을 입력해 주세요"})
 
     class Meta:
         model = UserGroup
         fields = ['id', 'group_name', 'pin', 'schedules', 'created_date']
+
+    def validate_pin(self, value):
+        if len(value) > 8 or len(value) < 4:
+            raise serializers.ValidationError("PIN은 4자 이상 8자 이하의 문자열로 이루어져야 합니다")
+        return value
 
 
 class UserSerializer(RegisterSerializer):
