@@ -26,9 +26,12 @@ def group_create(request):
     serializer = GroupSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        print(serializer.data)
         request.user.g_id.add(serializer.data['id'])
-        return Response("good job")
-    return Response("nope")
+        return Response({"success": "그룹을 성공적으로 생성했습니다."})
+    else:
+        print(serializer.data)
+        return Response(serializer.errors)
 
 @api_view(['GET'])
 def group_all(request):
@@ -42,6 +45,7 @@ def my_groups(request):
     serializer = GroupSerializer(request.user.g_id.all(), many=True)
 
     my_group_id = list(map(lambda x: x['id'], serializer.data))
+    print(serializer.data)
     return Response({'id': my_group_id, 'groups': serializer.data})
 
 
