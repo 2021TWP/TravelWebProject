@@ -103,16 +103,11 @@ def schedule_content_list(request):
     return Response(serializer.data)
 
 
-# @api_view(['GET'])
-# def get_data(request):
-
-
-
 @api_view(['POST'])
 def group_schedule_create(request, g_id):
 
     serializer = ScheduleSerializer(data=request.data)
-    group = UserGroup.objects.get(id=g_id)#시케쥴??
+    group = UserGroup.objects.get(id=g_id)
     if serializer.is_valid():
         serializer.save()
         group.schedules.add(serializer.data['id'])
