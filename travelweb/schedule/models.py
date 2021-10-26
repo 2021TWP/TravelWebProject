@@ -8,7 +8,9 @@ class Schedule(models.Model):
     location = models.CharField(max_length=300)
     title = models.TextField(max_length=100)
     description = models.TextField(max_length=400)
-    img = models.TextField(max_length=500,null=True,blank=True )
+    # img = models.TextField(max_length=500,null=True,blank=True )
+    lat = models.CharField(max_length=300)
+    lng = models.CharField(max_length=300)
 
     def __str__(self):
         return str(self.id)

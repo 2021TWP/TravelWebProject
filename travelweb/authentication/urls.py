@@ -16,18 +16,23 @@ Including another URLconf
 
 from django.urls import path, include, re_path
 from authentication import views
-from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
+from dj_rest_auth.registration.views import VerifyEmailView
+from allauth.account.views import ConfirmEmailView
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView, PasswordChangeView
 
 urlpatterns = [
     path('', include('dj_rest_auth.urls')),
     path('signup/', include('dj_rest_auth.registration.urls')),
-    path('signup/^account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
-    path('signup/^account-confirm-email/<str:key>/', ConfirmEmailView.as_view(), name='account_confirm_email'),
-    path('password/reset/', PasswordResetView.as_view(), name='password_reset'),
-    path('password/reset/confirm/<str:uid>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    re_path(r'^signup/account-confirm-email/$', VerifyEmailView.as_view(), name='account_email_verification_sent'),
+    path('password/change/', PasswordChangeView.as_view(), name='password_change'),
     path('test/', views.user_check, name="test"),
     path('userinfo/', views.get_userinfo, name="get_userinfo"),
+    path('group/', views.group_all, name="group_all"),
+    path('group/myGroups/', views.my_groups, name="my_groups"),
+    path('group/join/', views.group_join, name="group_join"),
+    path('group/withdraw/', views.group_withdraw, name="group_join"),
+    path('group/usersInGroup/<int:g_id>', views.users_in_group, name="user_in_group"),
     path('group/create/', views.group_create, name="group_create"),
+
     # path()
 ]
