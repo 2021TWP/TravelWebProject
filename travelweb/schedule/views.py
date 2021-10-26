@@ -3,6 +3,8 @@ from rest_framework.response import Response
 
 from .models import Schedule, Schedule_content
 from .serializers import ScheduleSerializer, ScheduleContentSerializer
+from authentication.models import UserGroup
+from authentication.serializers import GroupSerializer
 
 
 @api_view(['GET'])
@@ -100,4 +102,29 @@ def schedule_content_list(request):
     serializer = ScheduleContentSerializer(list, many=True)
     return Response(serializer.data)
 
+
+# @api_view(['GET'])
+# def get_data(request):
+
+
+
+@api_view(['POST'])
+def group_schedule_create(request, g_id):
+
+    serializer = ScheduleSerializer(data=request.data)
+    group = UserGroup.objects.get(id=g_id)#시케쥴??
+    if serializer.is_valid():
+        serializer.save()
+        group.schedules.add(serializer.data['id'])
+        return Response(serializer.data)
+    else:
+        return Response({"msg": "failed"})
+
+
+@api_view(['GET'])
+def group_schedule_list(request, g_id):
+    group = UserGroup.objects.get(id=g_id)
+    serializer =GroupSerializer(group, many=False)
+
+    return Response(serializer.data['schedules'])
 
