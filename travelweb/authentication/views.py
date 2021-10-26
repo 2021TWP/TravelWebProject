@@ -40,6 +40,7 @@ def group_all(request):
 @api_view(['GET'])
 def my_groups(request):
     serializer = GroupSerializer(request.user.g_id.all(), many=True)
+
     my_group_id = list(map(lambda x: x['id'], serializer.data))
     return Response({'id': my_group_id, 'groups': serializer.data})
 
@@ -93,3 +94,8 @@ def users_in_group(request, g_id):
         name.append(i['name'])
     print(name)
     return Response(name)
+
+
+@api_view(['PUT'])
+def update_group(request):
+    pass
