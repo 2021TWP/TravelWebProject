@@ -1,0 +1,7 @@
+{% load i18n %}{% autoescape off %}{% blocktrans with site_name=current_site.name %} Travel에서 보내는 이메일입니다. {% endblocktrans %}
+
+{% block content %}{% endblock %}
+
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}저희 Travel을 이용해주셔서 감사합니다
+{% endblocktrans %}
+{% endautoescape %}
